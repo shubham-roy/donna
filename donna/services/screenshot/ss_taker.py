@@ -17,6 +17,11 @@ def take_screenshots(interval: int, duration: int, path: str) -> None:
     :param duration: in minutes.
     :param path: directory to store screenshots to.
     """
+
+    def curr_time() -> int:
+        """Returns current time in seconds since epoch."""
+        return int(time())
+
     if interval > duration * TIME_CONVERSION_FACTOR:
         logger.error(
             f"Value of 'interval' = {interval} is less than value of 'duration' = {duration * TIME_CONVERSION_FACTOR}."
@@ -25,8 +30,8 @@ def take_screenshots(interval: int, duration: int, path: str) -> None:
 
     image_cnt = 1
     make_directory(path)
-    start_time = int(time())  # start time in seconds since epoch.
-    while int((int(time()) - start_time) / TIME_CONVERSION_FACTOR) < duration:
+    start_time = curr_time()  # start time in seconds since epoch.
+    while int((curr_time() - start_time) / TIME_CONVERSION_FACTOR) < duration:
         image_name = f"{DONNA}_ss_{image_cnt}.png"
         image_cnt += 1
         image = screenshot()
@@ -55,11 +60,11 @@ def take_screenshots(interval: int, duration: int, path: str) -> None:
     "-p",
     default=str(join(CURR_DIR, DONNA)),
     show_default=True,
-    help=f"Directory to save screenshots to. Will create the directory if not present. By default creates a directory named '{DONNA}' in current working directory.",
+    help=f"Directory to save screenshots to. Will create the directory if not present.",
 )
 def take_ss(interval: int, duration: int, path: str):
     logger.info(
         f"Initiating screenshot capture for the next {duration} min. at regular intervals of {interval} sec. Images will be stored at '{path}'."
     )
     take_screenshots(interval, duration, path)
-    click.echo(click.style(f"Screenshots are ready at {path}.", fg="green"))
+    click.echo(click.style(f"Screenshots are ready at '{path}'.", fg="green"))
