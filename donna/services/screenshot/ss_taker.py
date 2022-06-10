@@ -31,7 +31,7 @@ def take_screenshots(interval: int, duration: int, path: str) -> None:
     image_cnt = 1
     make_directory(path)
     start_time = curr_time()  # start time in seconds since epoch.
-    while int((curr_time() - start_time) / TIME_CONVERSION_FACTOR) < duration:
+    while curr_time() - start_time < duration * TIME_CONVERSION_FACTOR:
         image_name = f"{DONNA}_ss_{image_cnt}.png"
         image_cnt += 1
         image = screenshot()
