@@ -24,7 +24,7 @@ def take_screenshots(interval: int, duration: int, path: str) -> None:
 
     if interval > duration * TIME_CONVERSION_FACTOR:
         logger.error(
-            f"Value of 'interval' = {interval} is less than value of 'duration' = {duration * TIME_CONVERSION_FACTOR}."
+            f"Value of 'interval' = {interval} is more than value of 'duration' = {duration * TIME_CONVERSION_FACTOR}."
         )
         raise ValueError("'interval' should be less than 'duration'")
 
