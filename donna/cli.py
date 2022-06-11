@@ -9,18 +9,19 @@ from donna.utils import make_directory
 from donna.services.screenshot.ss_taker import take_ss
 
 
-@click.group()
-def entry_point():
-    """Hello!! I'm Donna. I know everything."""
-
-    # Configuring logger for proper logging.
-    make_directory(DONNA_DIR)
+def configure_logger():
     log_file = join(DONNA_DIR, f"{DONNA}.log")
     if isfile(log_file):
         remove(log_file)  # Deleting log file from previous execution to save storage.
     logger.remove()  # Removing default sink to add our own customization in the next line.
     logger.add(sink=log_file, level=LogLevel.DEBUG, format=LOG_FORMAT, colorize=True)
 
+
+@click.group()
+def entry_point():
+    """Hello!! I'm Donna. I know everything."""
+    make_directory(DONNA_DIR)
+    configure_logger()
     logger.info("Starting Donna...")
 
 
