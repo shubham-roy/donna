@@ -29,7 +29,7 @@ jobs:
         if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
     - name: Test with pytest
       run: |
-        pytest-xvfb --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
+        pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
     - name: Coverage report generation
       uses: MishaKav/pytest-coverage-comment@main
       with:
