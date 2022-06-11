@@ -26,7 +26,7 @@ jobs:
         if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
     - name: Setup virtual display
       run: |
-        apt-get update && apt-get install -y software-properties-common unzip curl xvfb
+        sudo apt-get update && sudo apt-get install -y software-properties-common unzip curl xvfb
     - name: Test with xvfb-run pytest
       run: |
         xvfb-run python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
