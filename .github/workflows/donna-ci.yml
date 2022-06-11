@@ -5,9 +5,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: read
-
 jobs:
   build-and-test-on-ubuntu-latest:
 
