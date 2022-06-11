@@ -28,7 +28,7 @@ jobs:
     - name: Test with pytest
       run: |
         export DISPLAY=:0
-        xhost +
+        xhost +SI:localuser:root
         pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
     - name: Coverage report generation
       uses: MishaKav/pytest-coverage-comment@main
