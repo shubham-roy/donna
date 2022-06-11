@@ -20,6 +20,7 @@ setup(
         "loguru==0.6.0",
         "Pillow==9.1.1",
         "PyAutoGUI==0.9.53",
+        "python-xlib==0.31",
     ],
     entry_points={
         "console_scripts": [
