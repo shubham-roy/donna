@@ -12,23 +12,52 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install .
         if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
+
     - name: Setup virtual display
       run: |
         sudo apt-get update && sudo apt-get install -y software-properties-common unzip curl xvfb
+
     - name: Test with xvfb-run pytest
       run: |
         xvfb-run python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
+
     - name: Pytest coverage comment
+      id: coverageComment
       uses: MishaKav/pytest-coverage-comment@v1.1.28
       with:
         pytest-coverage-path: ./pytest-coverage.txt
         junitxml-path: ./pytest.xml
+
+    - name: Create variable of summary report
+      id: summary_report
+      run: |
+        SUMMARY_REPORT=${{ steps.coverageComment.outputs.summaryReport }}
+        echo "::set-output name=content::$SUMMARY_REPORT"
+
+    - name: Update Readme with coverage Html
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: |
+        sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.summary_report.outputs.content }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+
+
+    - name: Commit & push changes to Readme
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      uses: actions-js/push@master
+      with:
+        branch: master
+        message: Update coverage on Readme
+        github_token: ${{ secrets.GITHUB_TOKEN }}
