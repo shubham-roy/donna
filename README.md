@@ -20,7 +20,7 @@
 
 | Tests | Skipped | Failures | Errors | Time |
 | ----- | ------- | -------- | -------- | ------------------ |
-| 5 | 0 :zzz: | 0 :x: | 0 :fire: | 0.720s :stopwatch: |
+| 5 | 0 :zzz: | 0 :x: | 0 :fire: | 0.597s :stopwatch: |
 
 
 <!-- Pytest Coverage Comment:End -->
