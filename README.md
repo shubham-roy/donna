@@ -15,6 +15,10 @@
 ## Code Coverage
 
 <!-- Pytest Coverage Comment:Begin -->
+| Tests | Skipped | Failures | Errors | Time |
+| ----- | ------- | -------- | -------- | ------------------ |
+| 5 | 0 :zzz: | 0 :x: | 0 :fire: | 0.668s :stopwatch: |
+
 <!-- Pytest Coverage Comment:End -->
 
 ---
