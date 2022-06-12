@@ -36,19 +36,28 @@ jobs:
         xvfb-run python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=donna tests/ | tee pytest-coverage.txt
 
     - name: Pytest coverage comment
+      id: coverageComment
       uses: MishaKav/pytest-coverage-comment@v1.1.28
       with:
         pytest-coverage-path: ./pytest-coverage.txt
         junitxml-path: ./pytest.xml
 
-    - name: Update Readme with coverage Html
-      if: ${{ github.event_name }} == 'push' }} && ${{ github.ref == 'refs/heads/master' }}
+    - name: Create variable of summary report
+      id: summary_report
       run: |
-        sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n${{ steps.coverageComment.outputs.summaryReport }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+        SUMMARY_REPORT=${{ steps.coverageComment.outputs.summaryReport }}
+        echo "::set-output name=content::$SUMMARY_REPORT"
+
+    - name: Update Readme with coverage Html
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: |
+        sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.summary_report.outputs.content }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+
 
     - name: Commit & push changes to Readme
-      if: ${{ github.event_name }} == 'push' }} && ${{ github.ref == 'refs/heads/master' }}
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       uses: actions-js/push@master
       with:
+        branch: master
         message: Update coverage on Readme
         github_token: ${{ secrets.GITHUB_TOKEN }}
