@@ -76,7 +76,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         number: ${{ steps.cpr.outputs.pull-request-number }}
 
-    - name: PR automerge for Readme update
+    - name: Enable automerge for Readme update
       if: steps.approvePR.outcome == 'success'
       uses: peter-evans/enable-pull-request-automerge@v2
       with:
