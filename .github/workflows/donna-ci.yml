@@ -2,6 +2,7 @@ name: Donna
 
 on:
   push:
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -50,7 +51,7 @@ jobs:
 
     - name: Update Readme with coverage Html
       id: readmeUpdate
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push'
       run: |
         sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\n\${{ steps.coverageComment.outputs.coverageHtml }}\n\n\${{ steps.summary_report.outputs.content }}\n\n<!-- Pytest Coverage Comment:End -->' ./README.md
 
@@ -79,6 +80,6 @@ jobs:
       uses: pascalgn/automerge-action@v0.15.3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MERGE_METHOD: squash
         MERGE_RETRIES: 6
         MERGE_RETRY_SLEEP: 60000
-        LOG: TRACE
