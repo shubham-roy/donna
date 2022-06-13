@@ -41,6 +41,7 @@ jobs:
       id: coverageComment
       uses: MishaKav/pytest-coverage-comment@v1.1.28
       with:
+        default-branch: master
         pytest-coverage-path: ./pytest-coverage.txt
         junitxml-path: ./pytest.xml
 
@@ -76,7 +77,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         number: ${{ steps.cpr.outputs.pull-request-number }}
 
-    - name: Enable automerge for Readme update
+    - name: Enable automerge for Readme update PR
       if: steps.approvePR.outcome == 'success'
       uses: peter-evans/enable-pull-request-automerge@v2
       with:
