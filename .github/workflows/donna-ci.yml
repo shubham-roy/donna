@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Repo checkout
+      uses: actions/checkout@v3
       with:
         persist-credentials: false
         fetch-depth: 0
@@ -62,7 +63,7 @@ jobs:
       with:
         branch: workflow-readme-update
         base: master
-        title: README Update
+        title: "[skip ci] README Update"
         labels: automerge
         commit-message: Update coverage on Readme
         token: ${{ secrets.PAT_TOKEN }}
@@ -75,11 +76,10 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         number: ${{ steps.cpr.outputs.pull-request-number }}
 
-    - name: Auto merge Readme PR
+    - name: Enable automerge for Readme update
       if: steps.approvePR.outcome == 'success'
-      uses: pascalgn/automerge-action@v0.15.3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        MERGE_METHOD: squash
-        MERGE_RETRIES: 6
-        MERGE_RETRY_SLEEP: 60000
+      uses: peter-evans/enable-pull-request-automerge@v2
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        merge-method: squash
