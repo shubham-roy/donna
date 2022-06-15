@@ -44,6 +44,20 @@ May also work on Mac and Linux.
 
 ## Donna's Services
 
+#### Screenshot
+
+With screenshot service users can set up to take screenshots for a specified duration with a control on the interval between two successive screenshots. The following options are available for fine-grained control:
+
+| Option     	| Alias 	| Type    	| Required 	| Default                                              	| Description                                                                                 	|
+|------------	|-------	|---------	|----------	|------------------------------------------------------	|---------------------------------------------------------------------------------------------	|
+| --interval 	| -i    	| Integer 	| Yes      	| -                                                    	| The gap between two consecutive screenshots in seconds.                                     	|
+| --duration 	| -d    	| Integer 	| Yes      	| -                                                    	| The total duration for which to  take screenshots in minutes.                               	|
+| --path     	| -p    	| String  	| No       	| A folder named `Donna` in current directory of user. 	| Full path of the folder to store the screenshots. If folder is absent, it will be created.  	|
+
+An important usage note is not to keep `interval` more than `duration`.
+
+Example: `donna take-ss --interval 10 --duration 1  --path <your-desired-path>`
+
 ---
 
 ## Developer Guidelines
